@@ -24,6 +24,8 @@ jobs:
 
       - name: Run updater
         run: python scripts/update_carburanti.py
+        env:
+          PROXY_URL: "https://mimit-proxy.rumentopoli.workers.dev"
 
       - name: Commit and push changes
         run: |

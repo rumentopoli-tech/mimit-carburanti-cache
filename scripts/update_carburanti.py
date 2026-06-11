@@ -11,6 +11,13 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 URL_ANAGRAFICA = "https://www.mimit.gov.it/images/exportCSV/anagrafica_impianti_attivi.csv"
 URL_PREZZO = "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv"
 
+PROXY_URL = os.environ.get("PROXY_URL", "")
+
+def build_url(raw_url):
+    if PROXY_URL:
+        return f"{PROXY_URL}?url={raw_url}"
+    return raw_url
+
 def create_session():
     session = requests.Session()
     retry = Retry(total=3, backoff_factor=2, status_forcelist=[500, 502, 503, 504])
@@ -25,7 +32,7 @@ print(f"[{datetime.now()}] Downloading MIMIT data...")
 session = create_session()
 
 try:
-    resp_ana = session.get(URL_ANAGRAFICA, timeout=(30, 180))
+    resp_ana = session.get(build_url(URL_ANAGRAFICA), timeout=(30, 180))
     resp_ana.raise_for_status()
     ana_content = resp_ana.text
     print(f"  Anagrafica OK: {len(ana_content)} bytes")
@@ -34,7 +41,7 @@ except Exception as e:
     ana_content = None
 
 try:
-    resp_prezzo = session.get(URL_PREZZO, timeout=120)
+    resp_prezzo = session.get(build_url(URL_PREZZO), timeout=(30, 180))
     resp_prezzo.raise_for_status()
     prezzo_content = resp_prezzo.text
     print(f"  Prezzo OK: {len(prezzo_content)} bytes")
