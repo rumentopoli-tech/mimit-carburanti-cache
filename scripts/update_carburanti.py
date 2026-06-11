@@ -48,8 +48,8 @@ if ana_content and prezzo_content:
         from io import StringIO
 
         print(f"[{datetime.now()}] Parsing...")
-        df_a = pd.read_csv(StringIO(ana_content), sep="|", dtype=str, encoding="utf-8", on_bad_lines='skip')
-        df_p = pd.read_csv(StringIO(prezzo_content), sep="|", dtype=str, encoding="utf-8", on_bad_lines='skip')
+        df_a = pd.read_csv(StringIO(ana_content), sep="|", dtype=str, encoding="utf-8", skiprows=1, on_bad_lines='skip')
+        df_p = pd.read_csv(StringIO(prezzo_content), sep="|", dtype=str, encoding="utf-8", skiprows=1, on_bad_lines='skip')
         print(f"  Anagrafica: {len(df_a)} rows")
         print(f"  Prezzo: {len(df_p)} rows")
 
