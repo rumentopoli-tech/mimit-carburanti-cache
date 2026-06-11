@@ -50,8 +50,8 @@ if ana_content and prezzo_content:
         import pandas as pd
         from io import StringIO
 
-        df_a = pd.read_csv(StringIO(ana_content), sep="|", dtype=str, encoding="utf-8")
-        df_p = pd.read_csv(StringIO(prezzo_content), sep="|", dtype=str, encoding="utf-8")
+        df_a = pd.read_csv(StringIO(ana_content), sep="|", dtype=str, encoding="utf-8", on_bad_lines='skip')
+        df_p = pd.read_csv(StringIO(prezzo_content), sep="|", dtype=str, encoding="utf-8", on_bad_lines='skip')
         df_a.columns = [c.strip() for c in df_a.columns]
         df_p.columns = [c.strip() for c in df_p.columns]
 
