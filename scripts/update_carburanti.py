@@ -25,7 +25,7 @@ print(f"[{datetime.now()}] Downloading MIMIT data...")
 session = create_session()
 
 try:
-    resp_ana = session.get(URL_ANAGRAFICA, timeout=120)
+    resp_ana = session.get(URL_ANAGRAFICA, timeout=(30, 180))
     resp_ana.raise_for_status()
     ana_content = resp_ana.text
     print(f"  Anagrafica OK: {len(ana_content)} bytes")
