@@ -8,13 +8,11 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # MIMIT open data - proviamo diverse URL possibili
 URLS_ANAGRAFICA = [
-    "https://www.mimit.gov.it/images/open-data/anagrafica_impianti_attivi.csv",
-    "https://www.mimit.gov.it/open-data/anagrafica_impianti_attivi.csv",
+    "https://www.mimit.gov.it/images/exportCSV/anagrafica_impianti_attivi.csv",
 ]
 
 URLS_PREZZO = [
-    "https://www.mimit.gov.it/images/open-data/prezzo_alle_8.csv",
-    "https://www.mimit.gov.it/open-data/prezzo_alle_8.csv",
+    "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv",
 ]
 
 def try_download(url):
