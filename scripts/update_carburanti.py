@@ -55,8 +55,28 @@ if ana_content and prezzo_content:
 
         df_a.columns = [c.strip() for c in df_a.columns]
         df_p.columns = [c.strip() for c in df_p.columns]
+        print(f"  Anagrafica cols: {list(df_a.columns[:10])}")
+        print(f"  Prezzo cols: {list(df_p.columns[:10])}")
 
-        merged = pd.merge(df_p, df_a, on="idImpianto", how="inner", suffixes=("_p", "_a"))
+        # Find the common key column (might be idImpianto or something else)
+        common_cols = set(df_a.columns) & set(df_p.columns)
+        key_col = None
+        for candidate in ["idImpianto", "id_impianto", "ID_IMPIANTO", "CodImpianto"]:
+            if candidate in common_cols:
+                key_col = candidate
+                break
+        if not key_col and common_cols:
+            # Try to find a column that looks like an ID
+            for c in common_cols:
+                if "id" in c.lower() or "impianto" in c.lower():
+                    key_col = c
+                    break
+        
+        if not key_col:
+            raise Exception(f"No common key found. Anagrafica: {list(df_a.columns)}, Prezzo: {list(df_p.columns)}")
+        
+        print(f"  Using key: {key_col}")
+        merged = pd.merge(df_p, df_a, on=key_col, how="inner", suffixes=("_p", "_a"))
         print(f"  Merged: {len(merged)} rows")
 
         COLS = ["idImpianto","Gestore","Bandiera","Tipo Impianto","Nome Impianto",
@@ -78,7 +98,7 @@ if ana_content and prezzo_content:
         records = []
         for _, r in df.iterrows():
             records.append({
-                "id": str(r.get("idImpianto","")),
+                "id": str(r.get(key_col,"")),
                 "gestore": str(r.get("Gestore","")),
                 "bandiera": str(r.get("Bandiera","")),
                 "nome": str(r.get("Nome Impianto","")),
